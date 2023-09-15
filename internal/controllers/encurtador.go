@@ -20,14 +20,15 @@ func PostEncurtador(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"URL Encurtada": codUrl})
 }
 
-func GetAllUrlEncurtada(c *gin.Context) {
-	UrlEncurtada, err := models.GetAllUrl()
+func GetIDUrlEncurtada(c *gin.Context) {
+	codigo := c.Params.ByName("codigo")
+	url, err := models.GetIDUrl(codigo)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
+		c.JSON(http.StatusNotFound, gin.H{
 			"Error": err.Error(),
 		})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": UrlEncurtada})
+	c.JSON(http.StatusOK, url)
 }

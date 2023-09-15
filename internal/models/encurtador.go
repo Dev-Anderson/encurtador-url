@@ -1,18 +1,20 @@
 package models
 
 import (
-	"encurtador-url/cmd/config"
 	"encurtador-url/cmd/database"
 	"encurtador-url/internal/usecase"
 	"fmt"
 	"log"
-	"strconv"
 )
 
 type Encurtador struct {
 	ID          int    `json:"id"`
 	Codigo      string `json:"codigo"`
 	UrlOriginal string `json:"urloriginal"`
+}
+
+type Asdf struct {
+	Codigo string `json:"codigo"`
 }
 
 func InsertUrl(url string) (string, error) {
@@ -23,12 +25,7 @@ func InsertUrl(url string) (string, error) {
 
 	defer db.Close()
 
-	lengthRandomUrl, err := strconv.Atoi(config.LoadEnv().LengthUrl)
-	if err != nil {
-		fmt.Println("Erro ao converter o valor", err.Error())
-	}
-
-	codigoUrl, err := usecase.RandomUrl(lengthRandomUrl)
+	codigoUrl, err := usecase.RandomUrl(6)
 	if err != nil {
 		log.Fatal("Falha ao gerar o codigo Random para URL", err.Error())
 	}
@@ -37,47 +34,51 @@ func InsertUrl(url string) (string, error) {
 		INSERT INTO encurtador_url (codigo, url_original)
 		VALUES($1, $2)
 	`
+	db.Exec(insertSQL, codigoUrl, url)
 
-	var insertCode string
-	err2 := db.QueryRow(insertSQL, codigoUrl, url).Scan(&insertCode)
-	if err != nil {
-		return "", err2
-	}
+	fmt.Println(codigoUrl)
 
-	fmt.Printf("Codigo gerado e inserido no banco de dados: %s\n", insertCode)
-	return insertCode, nil
+	result := fmt.Sprintf("Resultado da URL = %s", codigoUrl)
+
+	return result, nil
 
 }
 
-func GetAllUrl() ([]Encurtador, error) {
+type UrlOriginal struct {
+	UrlOrignal string `json:"urloriginal"`
+}
+
+func GetIDUrl(codigo string) ([]UrlOriginal, error) {
 	db, err := database.ConnectionDB()
 	if err != nil {
-		panic(err)
+		fmt.Println("Falha ao conectar com o banco de dados", err.Error())
 	}
+
 	defer db.Close()
 
-	consulta := "SELECT id, codigo, url_original FROM encurtador_url ORDER BY ID"
-
-	rows, err := db.Query(consulta)
+	query := `
+		SELECT 
+			url_original
+		FROM encurtador_url 
+		WHERE codigo = $1
+	`
+	rows, err := db.Query(query, codigo)
 	if err != nil {
 		fmt.Println("Erro ao consultar no banco de dados", err.Error())
 	}
-
 	defer rows.Close()
 
-	var e []Encurtador
+	var urlOriginal []UrlOriginal
 	for rows.Next() {
-		var id int
-		var codigo string
-		var urlOrignal string
+		var url string
 
-		err := rows.Scan(&id, &codigo, &urlOrignal)
+		err := rows.Scan(&url)
 		if err != nil {
 			fmt.Println("Erro ao buscar no banco de dados", err.Error())
 		}
 
-		e = append(e, Encurtador{ID: id, Codigo: codigo, UrlOriginal: urlOrignal})
+		urlOriginal = append(urlOriginal, UrlOriginal{UrlOrignal: url})
 	}
 
-	return e, nil
+	return urlOriginal, nil
 }

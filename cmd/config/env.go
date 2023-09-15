@@ -13,7 +13,6 @@ type ConfigDB struct {
 	Port       string
 	DBName     string
 	PortServer string
-	LengthUrl  string
 	Caracteres string
 }
 
@@ -26,7 +25,6 @@ func LoadEnv() ConfigDB {
 		Port:       os.Getenv("DB_PORT"),
 		DBName:     os.Getenv("DB_NAME"),
 		PortServer: os.Getenv("PORT_SERVER"),
-		LengthUrl:  os.Getenv("LENGTH_URL"),
 		Caracteres: os.Getenv("RANDOM_CARACTERES"),
 	}
 }
