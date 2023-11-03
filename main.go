@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"encurtador-url/routes"
+)
 
 func main() {
-	fmt.Println("Teste")
+	routes.Inicialize()
 }
