@@ -1,11 +1,11 @@
 package main
 
 import (
-	"encurtador-url/database"
 	"encurtador-url/routes"
+	"encurtador-url/usecase"
 )
 
 func main() {
-	database.ConnectDatabse()
+	usecase.CreateTable()
 	routes.Inicialize()
 }

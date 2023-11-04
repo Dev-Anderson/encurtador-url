@@ -8,11 +8,11 @@ O usuário envia uma URL para o encurtador de URL, depois ele retorna um código
 
 ## Requisitos
 
-- Criar um servidor http que contenha dois endopoins
-- POST - recebe uma URL e retorna um código único
-- GET/code - utiliza o code para redirecionamento para a url original 
-- O código é um código único, a mesma url enviada várias vezes gera código diferentes 
-- O código tem o tamanho de até 6 caracteres 
+- [x] Criar um servidor http que contenha dois endopoins
+- [] POST - recebe uma URL e retorna um código único
+- [x] GET/code - utiliza o code para redirecionamento para a url original 
+- [] O código é um código único, a mesma url enviada várias vezes gera código diferentes 
+- [] O código tem o tamanho de até 6 caracteres 
 
 ## Stacks utilizadas 
 - Golang

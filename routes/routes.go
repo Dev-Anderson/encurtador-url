@@ -13,6 +13,12 @@ func configRoutes(router *gin.Engine) *gin.Engine {
 		{
 			home.GET("/", controllers.Home)
 		}
+		url := main.Group("url")
+		{
+			url.GET("/", controllers.GetAllUrls)
+			url.GET("/:cod", controllers.GetUrl)
+			url.POST("/", controllers.PostUrl)
+		}
 	}
 
 	return router

@@ -8,4 +8,5 @@ type Env struct {
 	DBName           string
 	PortServer       string
 	RandomCaracteres string
+	RandomLength     string
 }

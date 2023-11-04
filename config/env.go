@@ -41,5 +41,6 @@ func LoadEnv() schemas.Env {
 		DBName:           os.Getenv("DB_NAME"),
 		PortServer:       os.Getenv("PORT_SERVER"),
 		RandomCaracteres: os.Getenv("RANDOM_CARACTERES"),
+		RandomLength:     os.Getenv("RANDOM_LENGTH"),
 	}
 }
